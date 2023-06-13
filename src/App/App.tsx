@@ -1,17 +1,13 @@
-import { ChangeEvent, useEffect, useRef, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import style from "./App.module.scss";
 import { getCurrency } from "api/api";
-
-interface IItem {
-  name: string;
-  description: string;
-  id: string;
-  value: string;
-}
+import { List } from "shared/ui/List/ui/List";
+import { IItem } from "shared/types/type";
+import { Field } from "shared/ui/List/Field/Field";
 
 export const App = () => {
   const [currencyList, setCurrencyList] = useState<IItem[]>([]);
-  const [currentCurrency, setCurrentCurrency] = useState<IItem | null>(null);
+  const [currentCurrency, setCurrentCurrency] = useState<IItem | undefined>();
   const [input, setInput] = useState<string>("0");
   const [inRuble, setinRuble] = useState<undefined | string>(undefined);
 
@@ -20,17 +16,16 @@ export const App = () => {
   };
 
   useEffect(() => {
-    getCurrency()
-      .then((data) => {
-        setCurrencyList(
-          Object.keys(data).map((el) => ({
-            name: el,
-            description: data[el].Name,
-            id: data[el].ID,
-            value: data[el].Value,
-          }))
-        );
-      })
+    getCurrency().then((data) => {
+      setCurrencyList(
+        Object.keys(data).map((el) => ({
+          name: el,
+          description: data[el].Name,
+          id: data[el].ID,
+          value: data[el].Value,
+        }))
+      );
+    });
   }, []);
 
   useEffect(() => {
@@ -51,15 +46,13 @@ export const App = () => {
             <h1>Конвертер валют</h1>
           </div>
           <div className={style.Inner__Content}>
-            <input value={input} onChange={handlerInput} />
-            <select>
-              {currencyList.map((el) => (
-                <option onClick={() => handlerSelectCurrency(el)}>
-                  {el.name} ({el.description})
-                </option>
-              ))}
-            </select>
-            <input type="text" value={inRuble} />
+            <Field value={input} onChange={handlerInput} />
+            <List
+              value={currentCurrency}
+              onSelect={handlerSelectCurrency}
+              list={currencyList}
+            />
+            <Field value={inRuble} readOnly/>
           </div>
         </div>
       </div>
