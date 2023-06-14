@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react"
-import { IItem } from "shared/types/type"
 import style from "./List.module.scss"
 import { ReactComponent as Arrow } from "../assets/Vector.svg"
+import { IItem } from "shared/types/type"
 
 interface IList {
   list: IItem[];

@@ -2,20 +2,12 @@ import { ChangeEvent, useEffect, useState } from "react"
 import style from "./App.module.scss"
 import { getCurrency } from "api/api"
 import { List } from "shared/ui/List/ui/List"
-import { IItem } from "shared/types/type"
 import { Field } from "shared/ui/Field/Field"
 import { Loader } from "widgets/Loader/Loader"
+import { getLocalStorageCurrency } from "App/utils/getLocalStorageCurrency"
+import { IItem } from "shared/types/type"
 
 export const App = () => {
-	const getLocalStorageCurrency = () => {
-		const currencyFromLS = localStorage.getItem("currency")
-		if (currencyFromLS) {
-			return JSON.parse(currencyFromLS)
-		} else {
-			return undefined
-		}
-	}
-
 	const [currencyList, setCurrencyList] = useState<IItem[]>([])
 	const [currentCurrency, setCurrentCurrency] = useState<IItem | undefined>(
 		getLocalStorageCurrency()
@@ -79,7 +71,10 @@ export const App = () => {
 							onSelect={handlerSelectCurrency}
 							list={currencyList}
 						/>
-						<Field value={inRuble} readOnly />
+						<div className={style.Inner__InRubles}>
+							<Field value={inRuble} readOnly />
+							<span>₽</span>
+						</div>
 					</div>
 				</div>
 			</div>

@@ -36,4 +36,10 @@
         flex-direction: column;
         gap: 24px;
     }
+
+    &__InRubles {
+        display: flex;
+        gap: 24px;
+        align-items: center;
+    }
 }
