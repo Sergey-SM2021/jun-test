@@ -1,8 +1,8 @@
-import { InputHTMLAttributes } from "react";
-import style from "./Field.module.scss";
+import { InputHTMLAttributes } from "react"
+import style from "./Field.module.scss"
 
-interface IField extends InputHTMLAttributes<HTMLInputElement> {}
+type IField = InputHTMLAttributes<HTMLInputElement>
 
 export const Field = (props: IField) => {
-  return <input className={style.Field} {...props} />;
-};
+	return <input className={style.Field} {...props} />
+}

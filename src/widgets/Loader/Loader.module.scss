@@ -1,0 +1,9 @@
+.loader {
+    position: absolute;
+    inset: 0;
+    background-color: rgba(#000, .16);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+}
