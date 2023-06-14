@@ -3,7 +3,7 @@ import style from "./App.module.scss";
 import { getCurrency } from "api/api";
 import { List } from "shared/ui/List/ui/List";
 import { IItem } from "shared/types/type";
-import { Field } from "shared/ui/List/Field/Field";
+import { Field } from "shared/ui/Field/Field";
 
 export const App = () => {
   const [currencyList, setCurrencyList] = useState<IItem[]>([]);
@@ -16,16 +16,18 @@ export const App = () => {
   };
 
   useEffect(() => {
-    getCurrency().then((data) => {
-      setCurrencyList(
-        Object.keys(data).map((el) => ({
-          name: el,
-          description: data[el].Name,
-          id: data[el].ID,
-          value: data[el].Value,
-        }))
-      );
-    });
+    getCurrency()
+      .then((data) => {
+        setCurrencyList(
+          Object.keys(data).map((el) => ({
+            name: el,
+            description: data[el].Name,
+            id: data[el].ID,
+            value: data[el].Value,
+          }))
+        );
+      })
+      .catch((error) => alert(error));
   }, []);
 
   useEffect(() => {
@@ -33,6 +35,10 @@ export const App = () => {
       setinRuble(`${Number(input) * Number(currentCurrency?.value)}`);
     }
   }, [currentCurrency, input]);
+
+  useEffect(() => {
+    localStorage.setItem("currency", JSON.stringify(currentCurrency as IItem));
+  }, [currentCurrency]);
 
   const handlerInput = (e: ChangeEvent<HTMLInputElement>) => {
     setInput(e.currentTarget.value);
@@ -46,13 +52,13 @@ export const App = () => {
             <h1>Конвертер валют</h1>
           </div>
           <div className={style.Inner__Content}>
-            <Field value={input} onChange={handlerInput} />
+            <Field type="number" value={input} onChange={handlerInput} />
             <List
               value={currentCurrency}
               onSelect={handlerSelectCurrency}
               list={currencyList}
             />
-            <Field value={inRuble} readOnly/>
+            <Field value={inRuble} readOnly />
           </div>
         </div>
       </div>

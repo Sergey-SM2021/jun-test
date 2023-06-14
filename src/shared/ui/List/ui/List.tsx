@@ -21,14 +21,15 @@ export const List = ({ list, onSelect, value }: IList) => {
     setIsOpen(false);
   };
 
+  const cb = (e: MouseEvent) => {
+    if (!ref.current?.contains(e.target as Node)) {
+      handlerClose();
+    }
+  };
+
   useEffect(() => {
-    const cb = (e: MouseEvent) => {
-      if (!ref.current?.contains(e.target as Node)) {
-        handlerClose();
-      }
-    };
     document.addEventListener("mousedown", cb);
-    return document.removeEventListener("mousedown", cb);
+    return () => document.removeEventListener("mousedown", cb);
   }, []);
 
   return (
@@ -40,6 +41,7 @@ export const List = ({ list, onSelect, value }: IList) => {
           <div className={style.List__Items}>
             {list.map((el) => (
               <div
+                key={el.id}
                 className={style.List__Item}
                 onClick={() => {
                   onSelect(el);
